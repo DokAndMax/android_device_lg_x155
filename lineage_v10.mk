@@ -84,16 +84,25 @@ PRODUCT_COPY_FILES += \
 PRODUCT_TAGS += dalvik.gc.type-precise
 
 # RAMDISK
-#PRODUCT_COPY_FILES += \
-#    device/lge/v10/rootdir/root/init.v10_common.rc:root/init.v10_common.rc \
-#    device/lge/v10/rootdir/root/sbin/multi_init:root/sbin/multi_init \
-#    device/lge/v10/rootdir/root/init.protect.rc:root/init.protect.rc \
-#    device/lge/v10/rootdir/root/fstab.mt6582:root/fstab.mt6582 \
-#    device/lge/v10/rootdir/root/init.modem.rc:root/init.modem.rc \
-#    device/lge/v10/rootdir/root/factory_init.rc:root/factory_init.rc \
-#    device/lge/v10/rootdir/root/ueventd.v10.rc:root/ueventd.v10.rc \
-#    device/lge/v10/rootdir/root/init.v10.usb.rc:root/init.v10.usb.rc \
-#    device/lge/v10/rootdir/root/init.v10.rc:root/init.v10.rc
+PRODUCT_COPY_FILES += \
+    device/lge/v10/rootdir/root/enableswap.sh:root/enableswap.sh  \
+    device/lge/v10/rootdir/root/factory_init.project.rc:root/factory_init.project.rc \
+    device/lge/v10/rootdir/root/factory_init.rc:root/factory_init.rc \
+    device/lge/v10/rootdir/root/fstab.mt6582:root/fstab.mt6582 \
+    device/lge/v10/rootdir/root/init.aee.rc:root/init.aee.rc \
+    device/lge/v10/rootdir/root/init.lge.cmm.usb.sh:root/init.lge.cmm.usb.sh \
+    device/lge/v10/rootdir/root/init.lge.usb.sh:root/init.lge.usb.sh \
+    device/lge/v10/rootdir/root/init.modem.rc:root/init.modem.rc \
+    device/lge/v10/rootdir/root/init.mt6582.rc:root/init.mt6582.rc \
+    device/lge/v10/rootdir/root/init.mt6582.usb.rc:root/init.mt6582.usb.rc \
+    device/lge/v10/rootdir/root/init.project.rc:root/init.project.rc \
+    device/lge/v10/rootdir/root/init.ssd.rc:root/init.ssd.rc \
+    device/lge/v10/rootdir/root/init.usb.rc:root/init.usb.rc \
+    device/lge/v10/rootdir/root/init.xlog.rc:root/init.xlog.rc \
+    device/lge/v10/rootdir/root/meta_init.modem.rc:root/meta_init.modem.rc \
+    device/lge/v10/rootdir/root/meta_init.project.rc:root/meta_init.project.rc \
+    device/lge/v10/rootdir/root/meta_init.rc:root/meta_init.rc \
+    device/lge/v10/rootdir/root/ueventd.rc:root/ueventd.rc
 
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
