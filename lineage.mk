@@ -18,7 +18,7 @@ $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 PRODUCT_NAME := lineage_v10
 PRODUCT_DEVICE := v10
 PRODUCT_BRAND := lge
-PRODUCT_MANUFACTURER := lge
+PRODUCT_MANUFACTURER := LGE
 PRODUCT_MODEL := v10
 
 # Boot animation
@@ -26,4 +26,4 @@ TARGET_SCREEN_HEIGHT := 854
 TARGET_SCREEN_WIDTH := 480
 
 # Release name
-PRODUCT_RELEASE_NAME := v10
+PRODUCT_RELEASE_NAME := LG Max
