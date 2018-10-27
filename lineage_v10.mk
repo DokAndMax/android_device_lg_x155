@@ -189,7 +189,7 @@ PRODUCT_COPY_FILES += \
 $(call inherit-product, build/target/product/go_defaults.mk)
 
 # call the proprietary setup
-$(call inherit-product, vendor/lge/v10/giraffe-vendor.mk)
+$(call inherit-product, vendor/lge/v10/v10-vendor.mk)
 
 PRODUCT_PACKAGES += \
     charger \
