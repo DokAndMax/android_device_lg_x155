@@ -45,7 +45,7 @@ MTK_PLATFORM := mt6582
 MTK_PROJECT := v10
 TARGET_KERNEL_SOURCE := kernel/lge/v10
 TARGET_KERNEL_CONFIG := v10_defconfig
-BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE :=
 BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x04000000 --tags_offset 0x00000100 --base 0x80000000
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 2048
@@ -72,13 +72,13 @@ TW_CUSTOM_CPU_TEMP_PATH := /sys/class/thermal/thermal_zone5/temp
 TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
 TW_MAX_BRIGHTNESS := 255
 
-#RECOVERY_VARIANT := twrp
+RECOVERY_VARIANT := twrp
 
 # Fstab for TWRP
-#TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/root/twrp.fstab
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/root/twrp.fstab
 
 # Fstab for building
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/root/recovery.fstab
+#TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/root/recovery.fstab
 
 # Deodex
 WITH_DEXPREOPT := false

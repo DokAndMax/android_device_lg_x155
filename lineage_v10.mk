@@ -85,15 +85,15 @@ PRODUCT_TAGS += dalvik.gc.type-precise
 
 # RAMDISK
 PRODUCT_COPY_FILES += \
-    device/lge/v10/rootdir/root/init.giraffe_common.rc:root/init.giraffe_common.rc \
+    device/lge/v10/rootdir/root/init.mt6582_common.rc:root/init.mt6582_common.rc \
     device/lge/v10/rootdir/root/sbin/multi_init:root/sbin/multi_init \
     device/lge/v10/rootdir/root/init.protect.rc:root/init.protect.rc \
-    device/lge/v10/rootdir/root/fstab.giraffe:root/fstab.giraffe \
+    device/lge/v10/rootdir/root/fstab.mt6582:root/fstab.mt6582 \
     device/lge/v10/rootdir/root/init.modem.rc:root/init.modem.rc \
     device/lge/v10/rootdir/root/factory_init.rc:root/factory_init.rc \
-    device/lge/v10/rootdir/root/ueventd.giraffe.rc:root/ueventd.giraffe.rc \
-    device/lge/v10/rootdir/root/init.giraffe.usb.rc:root/init.giraffe.usb.rc \
-    device/lge/v10/rootdir/root/init.giraffe.rc:root/init.giraffe.rc
+    device/lge/v10/rootdir/root/ueventd.mt6582.rc:root/ueventd.mt6582.rc \
+    device/lge/v10/rootdir/root/init.mt6582.usb.rc:root/init.mt6582.usb.rc \
+    device/lge/v10/rootdir/root/init.mt6582.rc:root/init.mt6582.rc
 
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
@@ -180,7 +180,7 @@ PRODUCT_PACKAGES += \
 #PRODUCT_PACKAGES += \
 #    android.hardware.sensors@1.0-impl \
 #    android.hardware.sensors@1.0-service \
-#    sensors.giraffe
+#    sensors.mt6582
 
 PRODUCT_COPY_FILES += \
      $(LOCAL_PATH)/configs/_hals.conf:system/vendor/etc/sensors/_hals.conf
