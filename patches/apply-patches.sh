@@ -11,4 +11,3 @@ cd ..
 cd frameworks/base
 patch -p1 < ../../device/lge/v10/patches/Add-proc-ged-to-zygote-whitelist.patch
 cd ../..
-

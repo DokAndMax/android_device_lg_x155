@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2013 The Android Open-Source Project
+# Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,30 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-LOCAL_PATH := $(call my-dir)
+LOCAL_PATH := $(my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := sensors.v10
-
-LOCAL_MODULE_RELATIVE_PATH := hw
-LOCAL_PROPRIETARY_MODULE := true
-
-LOCAL_CFLAGS := -DLOG_TAG=\"MultiHal\"
-
-LOCAL_SRC_FILES := \
-    multihal.cpp \
-    SensorEventQueue.cpp \
-
-LOCAL_SHARED_LIBRARIES := \
-    libcutils \
-    libdl \
-    liblog \
-    libutils \
-
-LOCAL_STRIP_MODULE := false
+LOCAL_CFLAGS += $(LIBLOG_CFLAGS)
+LOCAL_MODULE := libxlog
+LOCAL_SRC_FILES := xlog.c
+LOCAL_C_INCLUDES += frameworks/av/media/mtp/ system/core/include/ frameworks/rs/server/ frameworks/av/include/ hardware/libhardware/include/
+LOCAL_SHARED_LIBRARIES := libcutils liblog libutils libbinder
 
 include $(BUILD_SHARED_LIBRARY)
-
-include $(call all-makefiles-under, $(LOCAL_PATH))
