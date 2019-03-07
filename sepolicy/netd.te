@@ -1,3 +1,6 @@
+#============= netd ==============
+allow netd self:capability sys_module;
+
 # Let netd access the interface
 allow netd wmtWifi_device:chr_file write;
 allow netd wmtWifi_device:chr_file open;
@@ -8,4 +11,3 @@ allow netd mtk_agpsd:tcp_socket { setopt getopt read write };
 allow netd wifi_data_file:sock_file { create setattr write unlink };
 allow netd dhcp_data_file:dir setattr;
 allow netd wifi_data_file:dir { setattr create };
-

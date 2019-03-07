@@ -208,12 +208,15 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libcurl
 
+# Shim libraries
 PRODUCT_PACKAGES += \
-    libshim_ril \
-    libshim_camera \
-    libshim_bionic \
-    libshim_atomic \
-    libxlog
+    libmtkshim_log \
+    libmtkshim_audio \
+    libmtkshim_ui \
+    libmtkshim_gui \
+    libmtkshim_omx \
+    libmtkshim_zw \
+    libmtkshim_atomic
 
 # Vendor Interface Manifest
 PRODUCT_COPY_FILES += \
