@@ -7,9 +7,10 @@ on early-init
     setprop ro.mtk.hardware mt6582
 
 on init
+    export LD_PRELOAD "/system/lib/libshims.so"
+    
     mkdir /protect_f 0771 system system
     mkdir /protect_s 0771 system system
-
 
     # Change ION driver permission
     chmod 0666 /dev/ion
@@ -23,6 +24,7 @@ on init
 on fs
     write /proc/bootprof "INIT:eMMC:Mount_All_START"
     mount_all /fstab.mt6582
+    swapon_all fstab.mt6582
     write /proc/bootprof "INIT:eMMC:Mount_All_END"
 
 # mount different fs end
@@ -93,8 +95,7 @@ on post-fs
 on post-fs-data
     # create basic filesystem structure
     mkdir /data/nvram 0771 root system
-    mkdir /data/nvram/bt 2771 bluetooth bluetooth
-    mkdir /data/nvram/media 0771 media audio
+    
     mkdir /data/misc/touchpanel 0755 root system
     mkdir /data/misc/sensor 0664 system system
 
@@ -158,18 +159,21 @@ on post-fs-data
     #insmod /system/lib/modules/m4u.ko
     chmod 0440 /dev/M4U_device
     chown system camera /dev/M4U_device
-
+    #set mlock limit to infinate (for m4u operation)
+    setrlimit 8 -1 -1
     # Start sensor
     chmod 0660 /dev/hwmsensor
     chmod 0660 /dev/gyroscope
     chmod 0660 /dev/msensor
     chmod 0660 /dev/gsensor
-    chmod 0660 /dev/alsps
+    chmod 0660 /dev/als_ps
+    chmod 0660 /dev/aal_als
     chown system system /dev/hwmsensor
     chown system system /dev/gyroscope
     chown system system /dev/msensor
     chown system system /dev/gsensor
-    chown system system /dev/alsps
+    chown system system /dev/als_ps
+    chown system system /dev/aal_als
     # Add for G-sensor
     chmod 0660 /sys/devices/platform/gsensor/driver/cpsdata
     chmod 0660 /sys/devices/platform/gsensor/driver/cpsrange
@@ -201,13 +205,11 @@ on post-fs-data
     chmod 0660 /sys/class/misc/m_acc_misc/accbatch
     chmod 0660 /sys/class/misc/m_acc_misc/accflush
     chmod 0660 /sys/class/misc/m_acc_misc/smactive
-    chmod 0660 /sys/class/misc/m_acc_misc/accdevnum
     chown system system /sys/class/misc/m_acc_misc/accenablenodata
     chown system system /sys/class/misc/m_acc_misc/accactive
     chown system system /sys/class/misc/m_acc_misc/accdelay
     chown system system /sys/class/misc/m_acc_misc/accbatch
     chown system system /sys/class/misc/m_acc_misc/accflush
-    chown system system /sys/class/misc/m_acc_misc/accdevnum
     chown system system /sys/class/misc/m_acc_misc/smactive
     chmod 0660 /sys/class/misc/m_mag_misc/magactive
     chmod 0660 /sys/class/misc/m_mag_misc/magdelay
@@ -274,7 +276,7 @@ on post-fs-data
     #Accdet
     chown root radio /sys/devices/platform/Accdet_Driver/driver/accdet_call_state
     #VideoCodec
-    chmod 0660 /dev/Vcodec
+    chmod 0666 /dev/Vcodec
     chown media media /dev/Vcodec
 
     #kpd
@@ -335,7 +337,7 @@ on post-fs-data
     chown root diag /sys/bus/platform/drivers/eint/current_eint
 
     # for ppp options file
-    mkdir /data/misc/ppp 0770 bluetooth bluetooth
+    mkdir /data/misc/ppp 0770 bluetooth net_bt
 
     # Android SEC related device nodes
     chmod 0660 /dev/sec
@@ -352,13 +354,13 @@ on post-fs-data
     chmod 0660 /dev/ttyGS2
 
     #Use uinput's default permission
-    chown system bluetooth /dev/uinput
+    chown system net_bt_admin /dev/uinput
 
     #TV-out
     chmod 0664 /dev/TV-out
 
     #HDMI
-    chmod 0664 /dev/hdmitx
+   #chmod 0664 /dev/hdmitx
 
     # JPEG
     chmod 0440 /dev/mtk_jpeg
@@ -369,6 +371,7 @@ on post-fs-data
 
     # DISP
     chmod 0440 /dev/mtk_disp
+    chown system system /dev/mtk_disp
 
     #Camera
     chmod 0660 /dev/camera-sysram
@@ -377,11 +380,19 @@ on post-fs-data
     chmod 0660 /dev/kd_camera_hw
     chmod 0660 /dev/kd_camera_flashlight
     chmod 0660 /dev/kd_camera_hw_bus2
-    chmod 0660 /dev/DW9714AF
-    chmod 0660 /dev/GAF001AF
-    chmod 0660 /dev/GAF002AF
-    chmod 0660 /dev/GAF008AF
+    chmod 0660 /dev/FM50AF
+    #LGE_CHANGE_S: [2014-11-18] kipo.yun@lge.com, Add camera
+    chmod 0660 /dev/DW9718AF
+	chmod 0660 /dev/DW9714AF
+    #LGE_CHANGE_E: [2014-11-18] kipo.yun@lge.com, Add camera
+    #LGE_CHANGE_S: [2014-11-28] yonghwan.lym@lge.com, OV8858 lens driver change.
+    chmod 0660 /dev/DW9714A
+    #LGE_CHANGE_E: [2014-11-28] yonghwan.lym@lge.com, OV8858 lens driver change.
     chmod 0660 /dev/CAM_CAL_DRV
+    chmod 0660 /dev/EEPROM_M24C08F
+    #LGE_CHANGE_S: [2015-01-09] yonghwan.lym@lge.com, soc sensor Manual Flicker
+    chown media media /sys/devices/platform/mt-i2c.1/i2c-1/1-007f/antibanding
+    #LGE_CHANGE_E: [2015-01-09] yonghwan.lym@lge.com, soc sensor Manual Flicker
 
     chown system camera /dev/camera-sysram
     chown system camera /dev/camera-isp
@@ -389,11 +400,16 @@ on post-fs-data
     chown system camera /dev/kd_camera_hw
     chown system camera /dev/kd_camera_flashlight
     chown system camera /dev/kd_camera_hw_bus2
-    chown system camera /dev/DW9714AF
-    chown system camera /dev/GAF001AF
-    chown system camera /dev/GAF002AF
-    chown system camera /dev/GAF008AF
+    chown system camera /dev/FM50AF
+    #LGE_CHANGE_S: [2014-11-18] kipo.yun@lge.com, Add camera
+    chown system camera /dev/DW9718AF
+	chown system camera /dev/DW9714AF
+    #LGE_CHANGE_E: [2014-11-18] kipo.yun@lge.com, Add camera
+    #LGE_CHANGE_S: [2014-11-28] yonghwan.lym@lge.com, OV8858 lens driver change.
+    chown system camera /dev/DW9714A
+    #LGE_CHANGE_E: [2014-11-28] yonghwan.lym@lge.com, OV8858 lens driver change.
     chown system camera /dev/CAM_CAL_DRV
+    chown system camera /dev/EEPROM_M24C08F
 
     #MATV
     chmod 0660 /dev/MATV
@@ -415,7 +431,7 @@ on post-fs-data
     chown media media /sys/bus/platform/drivers/mem_bw_ctrl/concurrency_scenario
 
     # SMI
-    chmod 0660 /dev/MTK_SMI
+    chmod 0666 /dev/MTK_SMI
     chown media media /dev/MTK_SMI
 
     #mtk_sched
@@ -425,12 +441,17 @@ on post-fs-data
     chmod 666 /dev/mali
     chown system graphics /dev/mali
 
+    #BT SCO CVSD, for MT6572 and MT6582 CVSD codec on AP
+    chmod 0660 /dev/ebc
+    chown system media /dev/ebc
 
 
     #sbchk
     mkdir /data/sec 0750 system system
 
+
     exec 0666 /system/xbin/autosanity
+
 
 #
 # Connectivity related device nodes & configuration (begin)
@@ -439,9 +460,7 @@ on post-fs-data
 #/dev/ttyMT2 for Connectivity BT/FM/GPS usage
     chmod 0660 /dev/ttyMT2
     chown system system /dev/ttyMT2
-    chown bluetooth bluetooth /dev/stpbt
-	chown system system /dev/block/mmcblk0p2
-
+chown system system /proc/secmem0
 # GPS
     chown gps gps /sys/devices/virtual/gpsdrv/gps/pwrctl
     chown gps gps /sys/devices/virtual/gpsdrv/gps/suspend
@@ -454,7 +473,6 @@ on post-fs-data
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/misc/wpa_supplicant 0770 wifi wifi
     chown wifi wifi /data/misc/wifi
-    chown wifi wifi /dev/wmtWifi
 #
 # Connectivity related device nodes & configuration (end)
 #
@@ -475,6 +493,7 @@ on boot
    chown root /remount.sh
    chmod 700 /remount.sh
    exec /remount.sh
+   chown wifi wifi /dev/wmtWifi
 
     # xlog
     start xlogboot
@@ -488,7 +507,7 @@ on boot
     write /proc/sys/vm/dirty_writeback_centisecs 300
 
     chmod 0660 /sys/power/autosleep
-
+    chown system radio /sys/class/leds/lcd-backlight/brightness
     chmod 0664 /sys/class/leds/lcd-backlight/brightness
 
     chown system system /sys/devices/system/cpu/cpufreq/hotplug/cpu_num_base
@@ -500,6 +519,8 @@ on boot
 
     chown root   system /sys/kernel/debug/binder/transaction_log_enable
 
+    chown system /sys/module/mlog/parameters/do_mlog
+    chown system /sys/module/mlog/parameters/timer_intval
     chown root   radio  /sys/class/leds/lcd-backlight/duty
     chown root   radio  /sys/class/leds/lcd-backlight/div
     chown system system /sys/class/leds/lcd-backlight/trigger
@@ -508,6 +529,15 @@ on boot
     chown system system /sys/class/leds/jogball-backlight/trigger
     chown system system /sys/class/leds/red/trigger
     chown system system /sys/class/leds/green/trigger
+    #XCORE: Disable led blink at startup
+    write /sys/devices/platform/leds-mt65xx/leds/red/brightness 250
+    write /sys/devices/platform/leds-mt65xx/leds/red/brightness 0
+    #XCORE: END
+    #XCORE: Tap2Wake
+    #write /sys/devices/virtual/input/lge_touch/tap2wake 1
+    chown system system /sys/devices/virtual/input/lge_touch/tap2wake
+    chmod 0664 /sys/devices/virtual/input/lge_touch/tap2wake
+    #XCORE: END
     chown system system /sys/class/leds/blue/trigger
 
     # Permission for hibernation
@@ -590,12 +620,13 @@ on property:vold.decrypt=trigger_reset_main
 
 on property:vold.decrypt=trigger_restart_min_framework
     start start_modem
-
+    start msensord
+    
 on property:vold.decrypt=trigger_restart_framework
     start nvram_daemon
     start start_modem
     start msensord
-
+    
 on property:vold.decrypt=trigger_shutdown_framework
     start stop_modem
 
@@ -627,7 +658,7 @@ service netdiag /system/bin/netdiag
 service nvram_daemon /system/bin/nvram_daemon
     class main
     user root
-    group root system
+    group system bluetooth
     oneshot
 
 service atci_service /system/bin/atci_service
@@ -636,6 +667,7 @@ service atci_service /system/bin/atci_service
     user root
     disabled
     group radio system
+
 service atcid-daemon-u /system/bin/atcid
     user system
     group radio system media
@@ -658,6 +690,7 @@ service audio-daemon /system/bin/audiocmdservice_atci
     disabled
     oneshot
 
+
 service insmod insmod
     disabled
     oneshot
@@ -668,7 +701,7 @@ service rmmod rmmod
 
 #remove -puse_p2p_group_interface=1, our driver doesnot support this feature
 #
-service p2p_supplicant /system/vendor/bin/hw/wpa_supplicant \
+service p2p_supplicant /system/bin/wpa_supplicant \
 	-iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
 	-I/system/etc/wifi/wpa_supplicant_overlay.conf -N \
 	-ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin \
@@ -683,7 +716,7 @@ service p2p_supplicant /system/vendor/bin/hw/wpa_supplicant \
     disabled
     oneshot
 
-service wpa_supplicant /system/vendor/bin/hw/wpa_supplicant \
+service wpa_supplicant /system/bin/wpa_supplicant \
 	-iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -e/data/misc/wifi/entropy.bin \
 	-I/system/etc/wifi/wpa_supplicant_overlay.conf \
 	-O/data/misc/wifi/sockets -g@android:wpa_wlan0
@@ -696,33 +729,85 @@ service wpa_supplicant /system/vendor/bin/hw/wpa_supplicant \
     disabled
     oneshot
 
+
+service dhcpcd_bt-pan /system/bin/dhcpcd -A -BK -dd
+    class main
+    user dhcp
+    group net_admin net_raw
+    disabled
+    oneshot
+
+
+
+service dhcpcd_wlan0 /system/bin/dhcpcd -A -BK -dd
+    class main
+    user dhcp
+    group net_admin net_raw
+    disabled
+    oneshot
+
+service dhcpcd_p2p /system/bin/dhcpcd -A -BK -dd
+    class main
+    user dhcp
+    group net_admin net_raw
+    disabled
+    oneshot
+
+service iprenew_wlan0 /system/bin/dhcpcd -n
+    class main
+    user dhcp
+    group net_admin net_raw
+    disabled
+    oneshot
+
+service iprenew_p2p /system/bin/dhcpcd -n
+    class main
+    user dhcp
+    group net_admin net_raw
+    disabled
+    oneshot
+
+service dhcp6cDNS_wlan0 /system/bin/dhcp6c -c "/etc/wide-dhcpv6/dhcp6cDNS.conf" -Df wlan0
+    disabled
+    oneshot
+
+service dhcp6c_wlan0 /system/bin/dhcp6c -c "/etc/wide-dhcpv6/dhcp6c.conf" -Df wlan0
+    disabled
+    oneshot
+
+on property:service.dhcp6c_wlan0.enable=0
+    stop dhcp6c_wlan0
+
+on property:service.dhcp6c_wlan0.enable=1
+    start dhcp6c_wlan0
+    
 service bluetoothd /system/bin/bluetoothd -n
     class main
     socket bluetooth stream 660 bluetooth bluetooth
     socket dbus_bluetooth stream 660 bluetooth bluetooth
     # init.rc does not yet support applying capabilities, so run as root and
     # let bluetoothd drop uid to bluetooth with the right linux capabilities
-    group bluetooth misc
+    group bluetooth net_bt_admin misc
     disabled
 
 #
 #  External Modme control related services
 #
 
-# service agpsd /system/bin/mtk_agpsd
-#    class main
-#    socket agpsd stream 660 gps system
-#    socket agpsd2 stream 660 gps inet
-#    socket agpsd3 stream 660 gps inet
-#    user gps
-#    group gps inet sdcard_r sdcard_rw misc radio
+service agpsd /system/bin/mtk_agpsd
+    class main
+    socket agpsd stream 660 gps system
+    socket agpsd2 stream 660 gps inet
+    socket agpsd3 stream 660 gps inet
+    user gps
+    group gps inet sdcard_r sdcard_rw misc radio
 
 service mnld /system/xbin/mnld
     class main
     user gps
     group system gps inet misc sdcard_rw sdcard_r media_rw
     socket mnld stream 660 gps system
-
+    
 service mdlogger /system/bin/mdlogger
     class main
     user shell
@@ -769,7 +854,7 @@ service akmd8963 /system/bin/akmd8963
     group system
 
 service bmm050d /system/bin/bmm050d
-    disabled
+	class main
     user system
     group system
 
@@ -793,9 +878,8 @@ service geomagneticd /system/bin/geomagneticd
     user system
     group system input
 service bmc156d /system/bin/bmc156d
-    disabled
     class main
-    user system
+    user root
     group system input
 service lsm303md /system/bin/lsm303md
     disabled
@@ -811,14 +895,21 @@ service shutdown /system/bin/shutdown
     group root
     disabled
 
+service NvRAMAgent /system/bin/nvram_agent_binder
+    class main
+    user system
+    group system
+
 service thermal_manager /system/bin/thermal_manager
     class main
     user root
     oneshot
 
-service battery_charger /charger
+service charger /sbin/healthd -c
     class charger
+    critical
     seclabel u:r:healthd:s0
+
 #
 # Connectivity related services (Begin)
 #

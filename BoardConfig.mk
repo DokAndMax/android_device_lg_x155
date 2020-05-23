@@ -40,19 +40,15 @@ BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072
 
 # kernel stuff
-BOARD_CUSTOM_BOOTIMG_MK := device/lge/v10/tools/bootimg.mk
+#BOARD_CUSTOM_BOOTIMG_MK := device/lge/v10/tools/bootimg.mk
+#TARGET_PREBUILT_KERNEL := device/lg/v10/kernel
 MTK_PLATFORM := mt6582
-MTK_PROJECT := v10
 TARGET_KERNEL_SOURCE := kernel/lge/v10
 TARGET_KERNEL_CONFIG := v10_defconfig
-BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := androidboot.hardware=mt6582 androidboot.selinux=permissive
 BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x04000000 --tags_offset 0x00000100 --base 0x80000000
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 2048
-#KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_OS)-x86/arm/arm-eabi-4.8/bin
-#KERNEL_TOOLCHAIN_PREFIX := arm-eabi-
-#TARGET_PREBUILT_KERNEL := device/lge/v10/kernel
-BOARD_KERNEL_IMAGE_NAME := zImage
 
 # TWRP stuff
 TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
@@ -64,6 +60,8 @@ TW_CUSTOM_POWER_BUTTON := 116
 TW_CUSTOM_CPU_TEMP_PATH := /sys/class/thermal/thermal_zone5/temp
 TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
 TW_MAX_BRIGHTNESS := 255
+TW_SCREEN_BLANK_ON_BOOT := true
+BOARD_HAS_NO_SELECT_BUTTON := true
 
 #RECOVERY_VARIANT := twrp
 
@@ -78,15 +76,7 @@ WITH_DEXPREOPT := false
 DISABLE_DEXPREOPT := true
 
 # Block based ota
-BLOCK_BASED_OTA := false
-
-# Include symbols
-TARGET_LD_SHIM_LIBS :=  /system/lib/liblog.so|libmtkshim_log.so:/system/lib/hw/audio.primary.$(TARGET_BOARD_PLATFORM).so|libmtkshim_audio.so:/system/lib/libui.so|libmtkshim_ui.so:/system/lib/libgui.so|libmtkshim_gui.so:/system/lib/libMtkOmxVdec.so|libmtkshim_omx.so:/system/vendor/lib/libJpgDecPipe.so|libmtkshim_atomic.so
-
-PRESENT_TIME_OFFSET_FROM_VSYNC_NS := 0
-
-#ANDROID_COMPILE_WITH_JACK := false
-#DEFAULT_JACK_ENABLED=false
+BLOCK_BASED_OTA := true
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
@@ -96,6 +86,7 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 
 # OpenGL
 USE_OPENGL_RENDERER := true
+BOARD_EGL_WORKAROUND_BUG_10194508 := true
 TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 
 # FM
@@ -113,16 +104,12 @@ WIFI_DRIVER_FW_PATH_PARAM := "/dev/wmtWifi"
 WIFI_DRIVER_FW_PATH_STA := STA
 WIFI_DRIVER_FW_PATH_AP := AP
 WIFI_DRIVER_FW_PATH_P2P := P2P
-WIFI_DRIVER_STATE_CTRL_PARAM := /dev/wmtWifi
-WIFI_DRIVER_STATE_ON := 1
-WIFI_DRIVER_STATE_OFF := 0
 
-# NINJA is enabled for fasted building
-# Set 'false' to disable use NINJA
-USE_NINJA := true
+# USE custom policy
+USE_CUSTOM_AUDIO_POLICY := 1
 
-# Malloc
-MALLOC_SVELTE := true
+# Fix scaling on older omx
+TARGET_OMX_LEGACY_RESCALING := true
 
 #Mediatek flags
 BOARD_HAS_MTK_HARDWARE := true
@@ -131,20 +118,34 @@ MTK_HARDWARE := true
 # FRAMEWORK WITH OUT SYNC
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 
-# Use half res bootanimation to speed up first boot sequence
-TARGET_BOOTANIMATION_HALF_RES := true
+#Tap 2 wake
+TARGET_TAP_TO_WAKE_NODE := "/sys/devices/virtual/input/lge_touch/tap2wake"
 
 # Fonts
 EXTENDED_FONT_FOOTPRINT := true
 
-TARGET_SYSTEM_PROP := $(LOCAL_PATH)/system.prop
+# Offmode Charging
+#WITH_CM_CHARGER := true
+BOARD_CHARGER_DISABLE_INIT_BLANK := true
+BOARD_CHARGER_ENABLE_SUSPEND := false
+BACKLIGHT_PATH := "/sys/class/leds/lcd-backlight/brightness"
+
+BOARD_CHARGING_CMDLINE_NAME := "androidboot.mode"
+BOARD_CHARGING_CMDLINE_VALUE := "chargerlogo"
+
+TARGET_SYSTEM_PROP := device/lge/v10/system.prop
 
 # Dual SIM
 SIM_COUNT := 2
+TARGET_GLOBAL_CFLAGS += -DANDROID_MULTI_SIM
+TARGET_GLOBAL_CPPFLAGS += -DANDROID_MULTI_SIM
 
-# RIL
-BOARD_RIL_CLASS := ../../../$(LOCAL_PATH)/ril/
+BOARD_EGL_CFG := device/lge/v10/rootdir/system/etc/egl.cfg
 
+
+# Flags
+TARGET_GLOBAL_CFLAGS   += -mfpu=neon -mfloat-abi=softfp
+TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
 TARGET_USERIMAGES_USE_EXT4:=true
 USE_CAMERA_STUB := true
 
@@ -152,5 +153,5 @@ USE_CAMERA_STUB := true
 BOARD_SEPOLICY_DIRS += \
     device/lge/v10/sepolicy
 
-# Hack for build
-$(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
+# SECCOMP
+BOARD_SECCOMP_POLICY += device/lge/v10/seccomp

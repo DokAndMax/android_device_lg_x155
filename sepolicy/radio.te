@@ -1,4 +1,2 @@
 allow radio init:unix_dgram_socket write;
-# allow radio init_tmpfs:file read;
-allow radio system_app_data_file:dir getattr;
-
+allow radio init_tmpfs:file read;

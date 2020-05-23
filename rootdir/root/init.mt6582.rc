@@ -1,8 +1,9 @@
-# mt6582 storage specific rc file.
-
 import /init.mt6582_common.rc
-
+import /init.zeta0y_core.rc
 on init
+
+
     # Support legacy paths
     symlink /sdcard /mnt/sdcard
     symlink /sdcard /storage/sdcard0
+

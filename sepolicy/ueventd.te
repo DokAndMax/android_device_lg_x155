@@ -1,6 +1,3 @@
-#============= ueventd ==============
-allow ueventd sysfs_gpsdrv:lnk_file relabelto;
-allow ueventd sysfs_msensord_daemon_file:file relabelto;
-allow ueventd sysfs_sensor_file:dir relabelto;
-allow ueventd sysfs_sensor_file:file relabelto;
-allow ueventd sysfs_sensor_file:lnk_file relabelto;
+allow ueventd device:chr_file {relabelfrom relabelto};
+
+
