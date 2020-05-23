@@ -1,6 +1,6 @@
 #============= init ==============
 allow init socket_device:sock_file { create setattr unlink };
-allow init system_file:file execute_no_trans;
+#allow init system_file:file execute_no_trans;
 
 allow init nvram_device:blk_file setattr;
 
@@ -11,9 +11,21 @@ allow init sysfs_sensor_file:dir relabelto;
 allow init sysfs_sensor_file:file { relabelto setattr };
 allow init sysfs_sensor_file:lnk_file relabelto;
 allow init tmpfs:lnk_file create;
-allow init { domain -lmkd }:process noatsecure;
+allow init { domain -lmkd -crash_dump }:process noatsecure;
 allow init muxreport_exec:file getattr;
 
 allow init block_device:blk_file { setattr write };
-allow init device:chr_file { ioctl open read write };
+allow init device:chr_file { ioctl };
 allow init property_socket:sock_file write;
+allow init als_ps_device:chr_file ioctl;
+allow init ccci_device:chr_file { ioctl write };
+allow init ccci_monitor_device:chr_file { ioctl write };
+allow init devpts:chr_file setattr;
+allow init gsensor_device:chr_file ioctl;
+allow init gsm0710muxd_device:chr_file write;
+allow init mtk_adc_cali_device:chr_file { ioctl write };
+allow init stpwmt_device:chr_file { ioctl write };
+allow init sysfs_msensord_daemon_file:file { open read };
+allow init wmtdetect_device:chr_file { ioctl write };
+
+allow init devpts:chr_file getattr;

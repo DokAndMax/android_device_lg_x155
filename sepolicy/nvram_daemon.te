@@ -18,6 +18,6 @@ allow nvram_daemon touchpanel_data_file:file { create read open write getattr se
 allow nvram_daemon sysfs:file { open read write };
 allow nvram_daemon self:capability { fsetid dac_read_search chown dac_override };
 allow nvram_daemon als_ps_device:chr_file { ioctl open read };
-allow nvram_daemon block_device:blk_file { open read write };
-allow nvram_daemon device:chr_file { ioctl open read write };
-allow nvram_daemon system_data_file:file { getattr open read setattr write };
+#allow nvram_daemon block_device:blk_file { open read write };
+allow nvram_daemon device:chr_file { ioctl };
+allow nvram_daemon system_data_file:file { getattr open read };

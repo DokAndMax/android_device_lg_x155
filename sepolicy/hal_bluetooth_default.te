@@ -1,0 +1,2 @@
+#============= hal_bluetooth_default ==============
+allow hal_bluetooth_default wcn_combo_chip_prop:file read;

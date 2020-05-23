@@ -7,10 +7,9 @@ on early-init
     setprop ro.mtk.hardware mt6582
 
 on init
-    #export LD_PRELOAD "libshim_zw.so"
-
     mkdir /protect_f 0771 system system
     mkdir /protect_s 0771 system system
+
 
     # Change ION driver permission
     chmod 0666 /dev/ion
@@ -24,7 +23,6 @@ on init
 on fs
     write /proc/bootprof "INIT:eMMC:Mount_All_START"
     mount_all /fstab.mt6582
-    swapon_all fstab.mt6582
     write /proc/bootprof "INIT:eMMC:Mount_All_END"
 
 # mount different fs end
@@ -384,6 +382,7 @@ on post-fs-data
     chmod 0660 /dev/GAF002AF
     chmod 0660 /dev/GAF008AF
     chmod 0660 /dev/CAM_CAL_DRV
+
     chown system camera /dev/camera-sysram
     chown system camera /dev/camera-isp
     chown system camera /dev/camera-pipemgr
@@ -395,7 +394,6 @@ on post-fs-data
     chown system camera /dev/GAF002AF
     chown system camera /dev/GAF008AF
     chown system camera /dev/CAM_CAL_DRV
-
 
     #MATV
     chmod 0660 /dev/MATV
@@ -426,6 +424,8 @@ on post-fs-data
 
     chmod 666 /dev/mali
     chown system graphics /dev/mali
+
+
 
     #sbchk
     mkdir /data/sec 0750 system system
@@ -709,13 +709,13 @@ service bluetoothd /system/bin/bluetoothd -n
 #  External Modme control related services
 #
 
- service agpsd /system/bin/mtk_agpsd
-     class main
-     socket agpsd stream 660 gps system
-     socket agpsd2 stream 660 gps inet
-    socket agpsd3 stream 660 gps inet
-     user gps
-     group gps inet sdcard_r sdcard_rw misc radio
+# service agpsd /system/bin/mtk_agpsd
+#    class main
+#    socket agpsd stream 660 gps system
+#    socket agpsd2 stream 660 gps inet
+#    socket agpsd3 stream 660 gps inet
+#    user gps
+#    group gps inet sdcard_r sdcard_rw misc radio
 
 service mnld /system/xbin/mnld
     class main

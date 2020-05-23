@@ -45,7 +45,7 @@ MTK_PLATFORM := mt6582
 MTK_PROJECT := v10
 TARGET_KERNEL_SOURCE := kernel/lge/v10
 TARGET_KERNEL_CONFIG := v10_defconfig
-BOARD_KERNEL_CMDLINE :=
+BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive
 BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x04000000 --tags_offset 0x00000100 --base 0x80000000
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 2048
@@ -55,21 +55,12 @@ BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_IMAGE_NAME := zImage
 
 # TWRP stuff
-TW_SCREEN_BLANK_ON_BOOT := true
-BOARD_HAS_NO_SELECT_BUTTON := true
 TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
-BOARD_HAS_NO_SELECT_BUTTON := true
-BOARD_RECOVERY_SWIPE := true
-RECOVERY_GRAPHICS_USE_LINELENGTH := true
-TW_DEFAULT_EXTERNAL_STORAGE := true
 TW_NO_USB_STORAGE := true
 TW_EXTERNAL_STORAGE_PATH := "/external_sd"
 TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
-TW_INCLUDE_JB_CRYPTO := true
-TW_CRYPTO_FS_TYPE := "ext4"
-TW_CRYPTO_REAL_BLKDEV := "/dev/block/mmcblk0p3"
-TW_CRYPTO_MNT_POINT := "/data"
-TW_CRYPTO_FS_OPTIONS := "nosuid,nodev,noatime,discard,noauto_da_alloc,data=ordered"
+TW_INCLUDE_CRYPTO := true
+TW_CUSTOM_POWER_BUTTON := 116
 TW_CUSTOM_CPU_TEMP_PATH := /sys/class/thermal/thermal_zone5/temp
 TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
 TW_MAX_BRIGHTNESS := 255
@@ -90,7 +81,7 @@ DISABLE_DEXPREOPT := true
 BLOCK_BASED_OTA := false
 
 # Include symbols
-TARGET_LD_SHIM_LIBS :=  /system/lib/liblog.so|libmtkshim_log.so:/system/vendor/lib/hw/audio.primary.$(TARGET_BOARD_PLATFORM).so|libmtkshim_audio.so:/system/lib/libui.so|libmtkshim_ui.so:/system/lib/libgui.so|libmtkshim_gui.so:/system/lib/libMtkOmxVdec.so|libmtkshim_omx.so:/system/vendor/lib/libJpgDecPipe.so|libmtkshim_atomic.so
+TARGET_LD_SHIM_LIBS :=  /system/lib/liblog.so|libmtkshim_log.so:/system/lib/hw/audio.primary.$(TARGET_BOARD_PLATFORM).so|libmtkshim_audio.so:/system/lib/libui.so|libmtkshim_ui.so:/system/lib/libgui.so|libmtkshim_gui.so:/system/lib/libMtkOmxVdec.so|libmtkshim_omx.so:/system/vendor/lib/libJpgDecPipe.so|libmtkshim_atomic.so
 
 PRESENT_TIME_OFFSET_FROM_VSYNC_NS := 0
 
