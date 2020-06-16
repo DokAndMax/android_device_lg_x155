@@ -94,19 +94,18 @@ MTK_FM_SUPPORT :=true
 MTK_FM_RX_SUPPORT :=true
 
 # MTK_WLAN_SUPPORT
-BOARD_WLAN_DEVICE                := MediaTek
 WPA_SUPPLICANT_VERSION           := VER_0_8_X
 BOARD_WPA_SUPPLICANT_DRIVER      := NL80211
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_mt66xx
 BOARD_HOSTAPD_DRIVER             := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB        := lib_driver_cmd_mt66xx
-WIFI_DRIVER_FW_PATH_PARAM := "/dev/wmtWifi"
-WIFI_DRIVER_FW_PATH_STA := STA
-WIFI_DRIVER_FW_PATH_AP := AP
-WIFI_DRIVER_FW_PATH_P2P := P2P
+WIFI_DRIVER_FW_PATH_PARAM:="/dev/wmtWifi"
+WIFI_DRIVER_FW_PATH_STA:=STA
+WIFI_DRIVER_FW_PATH_AP:=AP
+WIFI_DRIVER_FW_PATH_P2P:=P2P
 
 # USE custom policy
-USE_CUSTOM_AUDIO_POLICY := 1
+#USE_CUSTOM_AUDIO_POLICY := 1
 
 # Fix scaling on older omx
 TARGET_OMX_LEGACY_RESCALING := true
@@ -134,6 +133,9 @@ BOARD_CHARGING_CMDLINE_NAME := "androidboot.mode"
 BOARD_CHARGING_CMDLINE_VALUE := "chargerlogo"
 
 TARGET_SYSTEM_PROP := device/lge/v10/system.prop
+
+# Include symbols
+TARGET_LD_SHIM_LIBS :=  /system/lib/hw/audio.primary.$(TARGET_BOARD_PLATFORM).so|libmtkshim_audio.so/system/lib/libgui.so|libmtkshim_gui.so
 
 # Dual SIM
 SIM_COUNT := 2

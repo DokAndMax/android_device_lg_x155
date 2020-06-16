@@ -100,11 +100,6 @@ PRODUCT_PACKAGES += \
     libaudio-resampler \
     tinymix
 
-	
-# QuickCircle Case App
-PRODUCT_PACKAGES += \
-    FlipFlap
-	
 # FMRadio
 PRODUCT_PACKAGES += \
 	FMRadio
