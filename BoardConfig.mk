@@ -107,6 +107,28 @@ WIFI_DRIVER_FW_PATH_P2P:=P2P
 # USE custom policy
 #USE_CUSTOM_AUDIO_POLICY := 1
 
+# Shims
+TARGET_LD_SHIM_LIBS:= \
+	/system/lib/libui.so|libshim_audio.so \
+	/system/lib/libmedia.so|libshim_ui.so \
+	/system/lib/liblog.so|libshim_log.so \
+	/system/lib/libaudioflinger.so|libshim_log.so \
+	/system/lib/libaudiopolicyservice.so|libshim_log.so \
+	/system/lib/libaudioresampler.so|libshim_log.so \
+	/system/lib/libcutils.so|libshim_log.so \
+	/system/lib/libfmjni.so|libshim_log.so \
+	/system/lib/libgui.so|libshim_log.so \
+	/system/lib/libmedia.so|libshim_log.so \
+	/system/lib/libmedia_jni.so|libshim_log.so \
+	/system/lib/libmediaplayerservice.so|libshim_log.so \
+	/system/lib/libmtp.so|libshim_log.so \
+	/system/lib/libskia.so|libshim_log.so \
+	/system/lib/libstagefright.so|libshim_log.so \
+	/system/lib/libstagefright_httplive.so|libshim_log.so \
+	/system/lib/libsurfaceflinger.so|libshim_log.so \
+	/system/lib/libui.so|libshim_log.so \
+	/system/lib/libwifi-service.so|libshim_log.so
+
 # Fix scaling on older omx
 TARGET_OMX_LEGACY_RESCALING := true
 
@@ -133,9 +155,6 @@ BOARD_CHARGING_CMDLINE_NAME := "androidboot.mode"
 BOARD_CHARGING_CMDLINE_VALUE := "chargerlogo"
 
 TARGET_SYSTEM_PROP := device/lge/v10/system.prop
-
-# Include symbols
-TARGET_LD_SHIM_LIBS :=  /system/lib/hw/audio.primary.$(TARGET_BOARD_PLATFORM).so|libmtkshim_audio.so/system/lib/libgui.so|libmtkshim_gui.so
 
 # Dual SIM
 SIM_COUNT := 2

@@ -133,19 +133,18 @@ PRODUCT_AAPT_PREF_CONFIG := hdpi
 PRODUCT_PACKAGES += \
     setup_fs \
     e2fsck
-    
-# XCORE995 SHIM LIBS start    
-    
+
+# ABI fixes for old binaries
 PRODUCT_PACKAGES += \
-    libshims
-    
-# XCORE995 SHIM LIBS end
+	libshim_ui \
+	libshim_audio \
+	libshim_log
 
 # Power
 PRODUCT_PACKAGES += \
     power.default \
     power.mt6582
-	
+
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES := \
 	ro.crypto.state=unencrypted \
 	ro.mount.fs=EXT4 \
@@ -153,7 +152,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES := \
 	ro.allow.mock.location=0 \
 	ro.debuggable=1 \
 	ro.zygote=zygote32 \
-	camera.disable_zsl_mode=1 
+	camera.disable_zsl_mode=1
 
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.dex2oat-filter=speed \

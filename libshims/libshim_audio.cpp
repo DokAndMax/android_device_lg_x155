@@ -1,9 +1,6 @@
 #include <stdint.h>
-#include <string>
-#define ANDROID_ATOMIC_INLINE
 
 extern "C" {
-    #include <cutils/atomic.h>
     bool _ZN7android11AudioSystem24getVoiceUnlockDLInstanceEv(){
         return 0;
     }
@@ -12,7 +9,7 @@ extern "C" {
         return 0;
     }
  
-    int _ZN7android11AudioSystem17SetVoiceUnlockSRCEjj(uint32_t, uint32_t){
+    int _ZN7android11AudioSystem17SetVoiceUnlockSRCEjj(uint32_t outSR, uint32_t outChannel){
         return 0;
     }
 
@@ -20,15 +17,15 @@ extern "C" {
         return 0;
     }
  
-    int _ZN7android11AudioSystem15ReadRefFromRingEPvjS1_(void*, uint32_t, void*){
+    int _ZN7android11AudioSystem15ReadRefFromRingEPvjS1_(void*buf, uint32_t datasz, void* DLtime){
         return 0;
     }
     
-    int _ZN7android11AudioSystem20GetVoiceUnlockULTimeEPv(void*) {
+    int _ZN7android11AudioSystem20GetVoiceUnlockULTimeEPv(void* DLtime) {
         return 0;
     }
 
-    void _ZN7android11AudioSystem25freeVoiceUnlockDLInstanceEv() { }
+    void _ZN7android11AudioSystem25freeVoiceUnlockDLInstanceEv(){}
 
     bool _ZN7android11AudioSystem17stopVoiceUnlockDLEv(){
         return 0;

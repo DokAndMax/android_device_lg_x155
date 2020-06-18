@@ -6,11 +6,16 @@ on early-init
     mount debugfs /sys/kernel/debug /sys/kernel/debug
     setprop ro.mtk.hardware mt6582
 
-on init
-    export LD_PRELOAD "/system/lib/libshims.so"
-    
+on init 
+
     mkdir /protect_f 0771 system system
     mkdir /protect_s 0771 system system
+    
+    # For debugging:
+    setprop ro.secure=0
+    setprop ro.adb.secure=0
+    setprop ro.debuggable=1
+
 
     # Change ION driver permission
     chmod 0666 /dev/ion
@@ -95,7 +100,7 @@ on post-fs
 on post-fs-data
     # create basic filesystem structure
     mkdir /data/nvram 0771 root system
-    
+
     mkdir /data/misc/touchpanel 0755 root system
     mkdir /data/misc/sensor 0664 system system
 
@@ -621,12 +626,12 @@ on property:vold.decrypt=trigger_reset_main
 on property:vold.decrypt=trigger_restart_min_framework
     start start_modem
     start msensord
-    
+
 on property:vold.decrypt=trigger_restart_framework
     start nvram_daemon
     start start_modem
     start msensord
-    
+
 on property:vold.decrypt=trigger_shutdown_framework
     start stop_modem
 
@@ -780,7 +785,7 @@ on property:service.dhcp6c_wlan0.enable=0
 
 on property:service.dhcp6c_wlan0.enable=1
     start dhcp6c_wlan0
-    
+
 service bluetoothd /system/bin/bluetoothd -n
     class main
     socket bluetooth stream 660 bluetooth bluetooth
@@ -807,7 +812,7 @@ service mnld /system/xbin/mnld
     user gps
     group system gps inet misc sdcard_rw sdcard_r media_rw
     socket mnld stream 660 gps system
-    
+
 service mdlogger /system/bin/mdlogger
     class main
     user shell
